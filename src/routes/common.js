@@ -61,7 +61,7 @@ function loginPage(req, { email = '', error = '', next = '' } = {}) {
 
 get('/login', { auth: false }, (req, res) => {
   if (req.user) return res.redirect(HOME[req.user.role]);
-  res.html(loginPage(req, { next: req.query.next || '' }));
+  res.html(loginPage(req, { next: req.query.next || '', error: req.query.expired ? 'Your session expired. Please sign in again.' : '' }));
 });
 
 post('/login', { auth: false }, (req, res) => {
