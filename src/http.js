@@ -182,7 +182,13 @@ function createHandler({ renderError, onUser }) {
       if (req.method === 'POST') {
         const { fields, files } = await parseBody(req);
         req.body = fields; req.files = files;
-        if (fields._csrf !== req.session.csrf) return res.html(renderError(req, 403, 'Session expired', 'Your form session expired. Please go back, refresh the page and try again.'), 403);
+        if (fields._csrf !== req.session.csrf) {
+          // Stale form (e.g. the server restarted): send the user back instead of showing an error page.
+          if (req.path === '/login') return res.redirect('/login?expired=1');
+          req.flash('warning', 'Your session expired, so that action was not saved. Please try again.');
+          const ref = String(req.headers.referer || '').replace(/^https?:\/\/[^/]+/, '');
+          return res.redirect(ref.startsWith('/') && !ref.startsWith('//') ? ref : '/');
+        }
       } else { req.body = {}; req.files = {}; }
       await match.handler(req, res);
     } catch (err) {
