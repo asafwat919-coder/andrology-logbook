@@ -1,0 +1,16 @@
+{
+  "name": "electronic-andrology-logbook",
+  "version": "1.0.0",
+  "description": "Role-based electronic logbook for Andrology Master and MD candidates: activity logging, supervisor approval, progress monitoring and reports.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "start:empty": "node -e \"process.env.DEMO='0';require('./server.js')\"",
+    "reset": "node -e \"require('fs').rmSync('data',{recursive:true,force:true});console.log('Data folder removed')\""
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "license": "UNLICENSED"
+}

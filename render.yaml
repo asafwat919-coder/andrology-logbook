@@ -1,0 +1,20 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: andrology-logbook
+    runtime: node
+    plan: free            # free tier: data resets when the service restarts (see README)
+    buildCommand: echo "No build step needed"
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: COOKIE_SECURE
+        value: "1"
+    # For permanent data, switch plan to "starter" and uncomment:
+    # disk:
+    #   name: logbook-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
+    # and add an env var DATA_DIR=/var/data
